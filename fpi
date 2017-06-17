@@ -11,5 +11,14 @@
 #  (at your option) any later version.
 #
 
+from libfpi.dpkg import control
+
 if __name__ == "__main__":
-    print("Not yet implemented")
+    print("!!! TESTING !!!")
+    control = control.Control()
+    # Test google Chrome
+    control.parse("tdata/control")
+
+    print("Name: {}".format(control.get_name()))
+    print("Summary: {}".format(control.get_summary()))
+    print("Description: {}".format(control.get_description()))
