@@ -8,6 +8,14 @@ extreme situations where certain packages are not readily usable on Solus due to
 being restricted in format and distribution. The main goal is in providing the
 user with at least _some method_ to install the packages locally.
 
+Planned Dependencies
+--------------------
+
+ * `ypkg` (to convert to `.eopkg`)
+ * `ar` from `binutils` (extract `.deb`)
+ * `tar` (extract `.deb` innards.)
+ * Python. I know, I'm sorry. But `eopkg` is still Pythonic at this moment in time.
+
 License
 -------
 
