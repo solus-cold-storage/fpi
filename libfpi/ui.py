@@ -20,14 +20,21 @@ class FpiWindow(Gtk.ApplicationWindow):
     box = None
     stack = None
     stack_switcher = None
+    abar = None
 
     def __init__(self, app):
         Gtk.ApplicationWindow.__init__(self, application=app)
 
+        self.get_settings().set_property(
+            "gtk-application-prefer-dark-theme", True)
+
         # Layout
         self.box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
-        self.box.set_border_width(12)
         self.add(self.box)
+
+        self.abar = Gtk.ActionBar()
+        self.box.pack_end(self.abar, False, False, 0)
+
         self.build_contents()
 
         # Finalize the window itself
@@ -47,14 +54,27 @@ class FpiWindow(Gtk.ApplicationWindow):
         self.stack = Gtk.Stack()
         self.box.pack_start(self.stack, True, True, 0)
 
+        button = Gtk.Button("Install")
+        lab_disclaimer = Gtk.Label(
+            "This is a third party package and is not officially supported"
+            " by Solus")
+        img_warn = Gtk.Image.new_from_icon_name(
+            "dialog-warning-symbolic", Gtk.IconSize.BUTTON)
+        self.abar.pack_start(img_warn)
+        self.abar.pack_start(lab_disclaimer)
+        self.abar.pack_end(button)
+        button.get_style_context().add_class("destructive-action")
+
         # Details
         dumb = Gtk.Label("Details ...")
         self._fix_label(dumb)
+        dumb.set_property("margin", 12)
         self.stack.add_titled(dumb, "desc", "Details")
 
         # Files
         dumb = Gtk.Label("Files ...")
         self._fix_label(dumb)
+        dumb.set_property("margin", 12)
         self.stack.add_titled(dumb, "files", "Files")
 
     def headerbar(self):
@@ -64,8 +84,4 @@ class FpiWindow(Gtk.ApplicationWindow):
         self.stack_switcher = Gtk.StackSwitcher()
         header.set_custom_title(self.stack_switcher)
         self.stack_switcher.set_stack(self.stack)
-
-        button_action = Gtk.Button("Install")
-        button_action.get_style_context().add_class("suggested-action")
-        header.pack_start(button_action)
         return header
