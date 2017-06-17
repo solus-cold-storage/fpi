@@ -11,5 +11,12 @@
 #  (at your option) any later version.
 #
 
-import gi
-gi.require_version('Gtk', '3.0')
+
+from gi.repository import Gtk
+
+
+class FpiWindow(Gtk.ApplicationWindow):
+
+    def __init__(self, app):
+        Gtk.ApplicationWindow.__init__(self, application=app)
+        self.show_all()

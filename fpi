@@ -11,14 +11,41 @@
 #  (at your option) any later version.
 #
 
-from libfpi.dpkg import control
+from libfpi.ui import FpiWindow
+import sys
+from dbus.mainloop.glib import DBusGMainLoop
+from gi.repository import GObject, Gdk, Gtk
+
+FPI_APP_ID = "com.solus_project.ForeignPackageInstaller"
+
+
+class FpiApplication(Gtk.Application):
+
+    app_window = None
+
+    def activate_main_view(self):
+        self.ensure_window()
+        self.app_window.present()
+
+    def ensure_window(self):
+        """ Ensure we have a window """
+        if self.app_window is None:
+            self.app_window = FpiWindow(self)
+
+    def __init__(self):
+        Gtk.Application.__init__(
+            self,
+            application_id=FPI_APP_ID)
+        self.connect("activate", self.on_activate)
+
+    def on_activate(self, app):
+        """ Activate the primary view """
+        self.activate_main_view()
+
 
 if __name__ == "__main__":
-    print("!!! TESTING !!!")
-    control = control.Control()
-    # Test google Chrome
-    control.parse("tdata/control")
-
-    print("Name: {}".format(control.get_name()))
-    print("Summary: {}".format(control.get_summary()))
-    print("Description: {}".format(control.get_description()))
+    DBusGMainLoop(set_as_default=True)
+    GObject.threads_init()
+    Gdk.threads_init()
+    app = FpiApplication()
+    app.run(sys.argv)
