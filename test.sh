@@ -1,7 +1,7 @@
 #!/bin/bash
 
 tool_run() {
-    $* fpi.py fpi/*.py || exit 1
+    $* fpi libfpi/*.py || exit 1
 }
 
 tool_run pep8
