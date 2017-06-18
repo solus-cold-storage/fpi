@@ -12,40 +12,13 @@
 #
 
 from libfpi.ui import FpiWindow
-import sys
 from dbus.mainloop.glib import DBusGMainLoop
 from gi.repository import GObject, Gdk, Gtk
-
-FPI_APP_ID = "com.solus_project.ForeignPackageInstaller"
-
-
-class FpiApplication(Gtk.Application):
-
-    app_window = None
-
-    def activate_main_view(self):
-        self.ensure_window()
-        self.app_window.present()
-
-    def ensure_window(self):
-        """ Ensure we have a window """
-        if self.app_window is None:
-            self.app_window = FpiWindow(self)
-
-    def __init__(self):
-        Gtk.Application.__init__(
-            self,
-            application_id=FPI_APP_ID)
-        self.connect("activate", self.on_activate)
-
-    def on_activate(self, app):
-        """ Activate the primary view """
-        self.activate_main_view()
 
 
 if __name__ == "__main__":
     DBusGMainLoop(set_as_default=True)
     GObject.threads_init()
     Gdk.threads_init()
-    app = FpiApplication()
-    app.run(sys.argv)
+    app = FpiWindow()
+    Gtk.main()

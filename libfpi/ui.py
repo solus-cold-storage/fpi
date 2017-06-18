@@ -15,19 +15,20 @@
 from gi.repository import Gtk
 
 
-class FpiWindow(Gtk.ApplicationWindow):
+class FpiWindow(Gtk.Window):
 
     box = None
     stack = None
     stack_switcher = None
     abar = None
 
-    def __init__(self, app):
-        Gtk.ApplicationWindow.__init__(self, application=app)
+    def __init__(self):
+        Gtk.Window.__init__(self)
 
         self.get_settings().set_property(
             "gtk-application-prefer-dark-theme", True)
 
+        self.connect('destroy', lambda x: Gtk.main_quit())
         # Layout
         self.box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         self.add(self.box)
